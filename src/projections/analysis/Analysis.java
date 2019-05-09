@@ -806,13 +806,23 @@ public class Analysis {
 //	}
 //    }
 
-    
+	static boolean printedError = false;
     /// Get user event color given one of the potentially sparse ids used provided by the program
     public Color getUserEventColor(int eventID) {
     	if (getSts() != null) { 
     		Integer idx = getSts().getUserEventIndex(eventID);
-    		if(idx!=null)
-    			return userEventColors[idx.intValue()]; 
+		if(idx!=null) {
+			int val = idx.intValue();
+			if (val > 0 && val < userEventColors.length) {
+				return userEventColors[idx.intValue()];
+			} else {
+				if (!printedError) {
+						System.err.println("User Event Color Index out of bounds!\n");
+						printedError = true;
+					}
+				return userEventColors[0];
+			}
+		}
     	} 
 
     	return null; 
